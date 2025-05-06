@@ -44,29 +44,29 @@ Algoritmul Shunting-Yard pentru regex-uri, echivalent cu cel al expresiilor arit
 Implementarea construcției lui Thompson pentru a genera un NFA din regex-ul postfixat:
 
 - Clase:
-  - `State`: menține un dicționar `transitions` (cheie simbol, valoare lista de destinații) și o listă `epsilon` de tranziții ε.
+  - `State`: menține un dicționar `transitions` (cheie simbol, valoare lista de destinații) și o listă `lambda` de tranziții λ.
   - `NFA`: simplu container cu doi poli—`start` și `accept`.
 - Funcția `thompson_construction(postfix)`:
   - Folosește o stivă de obiecte `NFA`.  
   - Pentru fiecare caracter din postfix:
     - **literă/cifră**: creează NFA cu o singură tranziție etichetată.  
-    - **`.`** (concatenare): lipește NFA-urile din topul stivei în serie (ε-legătură între accept-ul primului și start-ul celui de-al doilea).  
-    - **`|`** (uniune): creează un nou start și un nou accept, cu ε-tranziții către cele două sub-NFA-uri și de la ambele accept-uri către noul accept.  
+    - **`.`** (concatenare): lipește NFA-urile din topul stivei în serie (λ-legătură între accept-ul primului și start-ul celui de-al doilea).  
+    - **`|`** (uniune): creează un nou start și un nou accept, cu λ-tranziții către cele două sub-NFA-uri și de la ambele accept-uri către noul accept.  
     - **`*`, `+`, `?`**: respectă schema clasică—în veloare în Bucla Kleene (`*`), plus-one (`+`) sau opțional (`?`) cu noduri adiționale și ε.  
   - La final există exact un NFA pe stivă, returnat ca rezultat.
 
 ### 5. nfa_to_dfa.py  
-Transformarea unui NFA cu ε-tranziții într-un DFA (algorithmul subset-construction):
+Transformarea unui NFA cu λ-tranziții într-un DFA (algorithmul subset-construction):
 
-- `epsilon_closure(states)`:  
-  - Pornind de la un set de stări NFA, adaugă recursiv toate stările accesibile prin tranziții ε.  
+- `lambda_closure(states)`:  
+  - Pornind de la un set de stări NFA, adaugă recursiv toate stările accesibile prin tranziții λ.  
 - `move(states, symbol)`:  
   - Pentru un set de stări și un simbol, colectează toate stările vizate de tranziții etichetate cu acel simbol.  
 - `nfa_to_dfa(nfa)`:  
-  1. Calculează ε-închiderea inițială a stării `start` → setul inițial de stări DFA.  
+  1. Calculează λ-închiderea inițială a stării `start` → setul inițial de stări DFA.  
   2. Menține o coadă („unmarked”) de seturi de stări NFA („stări DFA neprocesate”).  
   3. La fiecare pas extrage un set, pentru fiecare simbol din alfabetul NFA:
-     - Aplică `move` apoi `epsilon_closure` → obține un nou subset.  
+     - Aplică `move` apoi `lambda_closure` → obține un nou subset.  
      - Dacă subset-ul e nou, îi dă un nou ID și îl pune în coadă.  
      - Înregistrează tranziția DFA `(ID curent, simbol) → ID nou`.  
   4. După ce nu mai sunt stări neprocesate, marchează ca stări finale toate ID-urile care conțin starea `accept` a NFA-ului.  
