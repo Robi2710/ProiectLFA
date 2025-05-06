@@ -52,13 +52,6 @@ def validate_dfa(Sigma, States, q0, F, transitions):
     return True
 
 def simulate_dfa(dfa: dict, input_string: str) -> bool:
-    """
-    Simulate a DFA produced by your nfa_to_dfa converter.
-    'dfa' must be a dict with keys:
-       - "start":   the start state
-       - "transitions": a map (state, symbol) -> next_state
-       - "accepting":   a set of accepting states
-    """
     curr_state = dfa["start"]
     for symbol in input_string:
         key = (curr_state, symbol)

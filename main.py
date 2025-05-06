@@ -1,6 +1,6 @@
 import json
 from parser import parse
-from nfa_construct import thompson_construction  # sau din thompson import regex_to_nfa
+from nfa_construct import thompson_construction
 from nfa_to_dfa import nfa_to_dfa
 from dfa import simulate_dfa
 
@@ -9,11 +9,8 @@ def load_tests(json_path: str):
         return json.load(f)
 
 def build_dfa_from_regex(regex: str):
-    # 1) infix → postfix
     postfix = parse(regex)
-    # 2) postfix → NFA
     nfa = thompson_construction(postfix)
-    # 3) NFA → DFA
     dfa = nfa_to_dfa(nfa)
     return dfa
 

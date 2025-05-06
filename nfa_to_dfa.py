@@ -20,8 +20,8 @@ def move(states, symbol):
 def nfa_to_dfa(nfa):
     from collections import deque
 
-    dfa_states = {}  # map: frozenset(NFA states) -> DFA state id
-    dfa_transitions = {}  # (dfa_state_id, symbol) -> dfa_state_id
+    dfa_states = {}
+    dfa_transitions = {}
     dfa_accepting = set()
 
     state_id = 0

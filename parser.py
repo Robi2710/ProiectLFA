@@ -7,12 +7,6 @@ def concatenation(regex):
 
     for ch in regex:
         if prev:
-            # if prev is
-            #   • a literal (not an operator or '(')
-            #   • OR a closure symbol (*,+,?)
-            #   • OR a ')'
-            # and ch is a literal (not an operator or ')')
-            # then inject a '.'
             if (
                 ((prev not in op and prev != '(')
                  or (prev in '*+?')
